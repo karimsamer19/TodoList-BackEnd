@@ -1,6 +1,8 @@
 
 using Microsoft.EntityFrameworkCore;
 using TodoList.Data;
+using TodoList.Data.Models;
+using TodoList.Extensions;
 using TodoList.Interfaces;
 using TodoList.Services;
 
@@ -16,9 +18,17 @@ builder.Services.AddOpenApi();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
+builder.Services
+    .AddIdentityCore<User>()
+    .AddEntityFrameworkStores<AppDbContext>();
 
 // Add Services
 builder.Services.AddScoped<ITodos, TodosService>();
+builder.Services.AddScoped<IUser, UserService>();
+
+builder.Services.AddCustomJwtAuth(builder.Configuration);
+
+builder.Services.AddScoped<IAuth, AuthService>();
 
 var app = builder.Build();
 

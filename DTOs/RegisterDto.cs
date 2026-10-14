@@ -11,4 +11,7 @@ public class RegisterDto
     public string? Eamil { get; set; }
     [Required]
     public string Password { get; set; }
+
+    [RegularExpression(@"^\d{11}$", ErrorMessage = "Phone Number must be exactly 11 digits")]
+    public string? PhoneNumber { get; set; }
 }
